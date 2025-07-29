@@ -1,0 +1,53 @@
+{
+  "3": {
+    "name": "Smart Watch",
+    "description": "High-quality smart watch with fitness tracking and modern design.",
+    "priceBeforeDiscount": 800,
+    "priceAfterDiscount": 599,
+    "images": [
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRrFsBlZSYstB-5KOcKaFesl9ob5Z7PKbzFCg&s",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRv4MwtMXQ5zT-QGT8EPtYRPwPVRghPpP_8wCLabjUYxDUNbjETdDaGTmD97VDqVVV9k-w&usqp=CAU",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpWtL4VH0aBbJrwez8b-TR1I8TYOa_NQ-dR8zjiV014DoAMLupF2C6qZf8WhKs8-Cuf2Y&usqp=CAU"
+    ]
+  },
+  "4": {
+    "name": "Wireless Earbuds",
+    "description": "Comfortable earbuds with clear sound and long battery life.",
+    "priceBeforeDiscount": 500,
+    "priceAfterDiscount": 350,
+    "images": [
+      "https://www.boat-lifestyle.com/cdn/shop/files/ACCG6DS7WDJHGWSH_0.png?v=1727669669",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQLsjdbrkBuCInR-eHBEgdz4Fn48Q_b7nDjMEF0P46JP6rNSBBRfzE9qYToiGWMdFyVMJ4&usqp=CAU"
+    ]
+  },
+  "5": {
+    "name": "Gaming Mouse",
+    "description": "Precision mouse for gamers with customizable buttons.",
+    "priceBeforeDiscount": 300,
+    "priceAfterDiscount": 220,
+    "images": [
+      "https://www.geekzonedz.com/2340-large_default/logitech-g305-lightspeed-wireless-gaming-mouse-noir.jpg",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2EtF7GkGP2vgWR_FzrVPTBrDzq4af7lfjz8UB3o9YGup0RRGgqo3W89AAMLOOoFD1Ol4&usqp=CAU"
+    ]
+  },
+  "6": {
+    "name": "Bluetooth Speaker",
+    "description": "Portable speaker with strong bass and waterproof design.",
+    "priceBeforeDiscount": 650,
+    "priceAfterDiscount": 490,
+    "images": [
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQc5ovm7E_QmAyUGhtzuoOeKIREwmdTICjSxQ&s",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZPzIk1vAHmKEZT0J3b6lfG0CNEvk1rEMxDR101S6ekRgAkQ20ZajF7ybaBME8vEE0zZg&usqp=CAU"
+    ]
+  },
+  "7": {
+    "name": "LED Desk Lamp",
+    "description": "Energy-saving LED lamp with brightness control and USB port.",
+    "priceBeforeDiscount": 400,
+    "priceAfterDiscount": 299,
+    "images": [
+      "https://m.media-amazon.com/images/I/513Mqx+kK+L.jpg",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSc8dxIKIJNSf1atkghimAt6o5-TK-OiGynSQ&s"
+    ]
+  }
+}

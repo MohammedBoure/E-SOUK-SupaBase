@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>إدارة الطلبات - إي سوق</title>
+  <!-- Bootstrap RTL CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+    .card {
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .navbar-brand {
+      font-weight: 700;
+    }
+    .table-responsive {
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .form-control, .form-select {
+      border-radius: 8px;
+    }
+    .btn-action {
+      padding: 0.25rem 0.5rem;
+      font-size: 0.875rem;
+    }
+    .login-container {
+      max-width: 450px;
+    }
+    .main-container {
+      max-width: 1400px;
+    }
+    .status-select {
+      min-width: 120px;
+    }
+    @media (max-width: 768px) {
+      .btn-responsive {
+        display: block;
+        width: 100%;
+        margin-bottom: 10px;
+      }
+      .table-responsive {
+        font-size: 0.85rem;
+      }
+      .status-select {
+        min-width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- تسجيل الدخول -->
+  <div id="loginSection" class="container login-container py-5">
+    <div class="card shadow">
+      <div class="card-header bg-primary text-white text-center py-3">
+        <h2><i class="fas fa-user-shield me-2"></i>تسجيل دخول الأدمن</h2>
+      </div>
+      <div class="card-body p-4">
+        <form id="loginForm" class="needs-validation" novalidate>
+          <div class="mb-3">
+            <label for="email" class="form-label">البريد الإلكتروني</label>
+            <div class="input-group">
+              <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+              <input type="email" id="email" class="form-control" required>
+              <div class="invalid-feedback">يرجى إدخال بريد إلكتروني صحيح</div>
+            </div>
+          </div>
+          <div class="mb-4">
+            <label for="password" class="form-label">كلمة المرور</label>
+            <div class="input-group">
+              <span class="input-group-text"><i class="fas fa-lock"></i></span>
+              <input type="password" id="password" class="form-control" required>
+              <div class="invalid-feedback">يرجى إدخال كلمة المرور</div>
+            </div>
+          </div>
+          <button type="submit" id="loginBtn" class="btn btn-primary w-100 py-2">
+            <i class="fas fa-sign-in-alt me-2"></i>تسجيل الدخول
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- قسم الطلبات -->
+  <div id="ordersSection" class="container main-container py-4 d-none">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4 rounded">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+          <i class="fas fa-shopping-cart me-2"></i>إدارة الطلبات
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav me-auto">
+            <li class="nav-item">
+              <a href="admin-delivery-prices.html" class="nav-link">
+                <i class="fas fa-truck me-1"></i>إدارة أسعار التوصيل
+              </a>
+            </li>
+          </ul>
+          <div class="d-flex">
+            <button id="logoutBtn" class="btn btn-danger">
+              <i class="fas fa-sign-out-alt me-1"></i>تسجيل الخروج
+            </button>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <div class="card shadow">
+      <div class="card-header bg-primary text-white py-3">
+        <h4 class="mb-0"><i class="fas fa-list-ol me-2"></i>قائمة الطلبات</h4>
+      </div>
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table table-striped table-hover mb-0">
+            <thead class="table-dark">
+              <tr>
+                <th>رقم الطلب</th>
+                <th>المنتج</th>
+                <th>الكمية</th>
+                <th>الولاية</th>
+                <th>البلدية</th>
+                <th>رقم الهاتف</th>
+                <th>طريقة التوصيل</th>
+                <th>الحالة</th>
+                <th>تاريخ الطلب</th>
+                <th>إجراءات</th>
+              </tr>
+            </thead>
+            <tbody id="ordersTable" class="table-group-divider"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/js/admin/admin-orders-backend.js"></script>
+  <script src="/js/admin/admin-orders-frontend.js"></script>
+</body>
+</html>

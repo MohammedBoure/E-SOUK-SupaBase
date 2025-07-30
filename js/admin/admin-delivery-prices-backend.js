@@ -1,31 +1,28 @@
 document.addEventListener('DOMContentLoaded', function() {
-  // Initialize Supabase
   const supabaseUrl = 'https://txfboulsslyxdwhvxpde.supabase.co';
   const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR4ZmJvdWxzc2x5eGR3aHZ4cGRlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTM1Njg2NDIsImV4cCI6MjA2OTE0NDY0Mn0.x1y1dSqEzeu6iWgVAmC1c0DyTjltyMC8cTK0YjHPTpQ';
   const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 
-  // Fixed client_id
-  const CLIENT_ID = 'e8646c32-0e05-4e97-953b-5d0a4eb9e86e';
-
-  // Expose functions for frontend
   window.adminDeliveryPricesBackend = {
+    checkAuth: async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      return !!user;
+    },
     login: async (email, password) => {
       try {
-        const { error } = await supabase.auth.signInWithPassword({
-          email,
-          password
-        });
+        const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) {
-          alert('فشل تسجيل الدخول. تحقق من البريد الإلكتروني وكلمة المرور.');
+          window.adminDeliveryPricesFrontend.showError('فشل تسجيل الدخول: تحقق من البريد الإلكتروني وكلمة المرور.');
           console.error('Login Error:', error);
-          return;
+          return false;
         }
         window.adminDeliveryPricesFrontend.saveCredentials(email, password);
         await window.adminDeliveryPricesBackend.fetchDeliveryPrices();
-        window.adminDeliveryPricesFrontend.showPrices();
+        return true;
       } catch (error) {
-        alert('حدث خطأ أثناء تسجيل الدخول. حاول مرة أخرى.');
+        window.adminDeliveryPricesFrontend.showError('حدث خطأ أثناء تسجيل الدخول.');
         console.error('Login Error:', error);
+        return false;
       }
     },
     logout: async () => {
@@ -34,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
         window.adminDeliveryPricesFrontend.clearCredentials();
         window.adminDeliveryPricesFrontend.showLogin();
       } catch (error) {
-        alert('حدث خطأ أثناء تسجيل الخروج.');
+        window.adminDeliveryPricesFrontend.showError('حدث خطأ أثناء تسجيل الخروج.');
         console.error('Logout Error:', error);
       }
     },
@@ -46,12 +43,11 @@ document.addEventListener('DOMContentLoaded', function() {
           .eq('user_id', (await supabase.auth.getUser()).data.user.id)
           .single();
         if (clientError || !client) {
-          alert('فشل في جلب بيانات البائع.');
+          window.adminDeliveryPricesFrontend.showError('فشل في جلب بيانات البائع.');
           console.error('Client Error:', clientError);
           return;
         }
 
-        // Prepare data for bulk insert
         const priceData = state_ids.map(state_id => ({
           client_id: client.id,
           product_id,
@@ -65,18 +61,32 @@ document.addEventListener('DOMContentLoaded', function() {
           .insert(priceData);
 
         if (error) {
-          alert('فشل في تعيين أسعار التوصيل.');
+          window.adminDeliveryPricesFrontend.showError('فشل في تعيين أسعار التوصيل.');
           console.error('Set Delivery Prices Error:', error);
           return;
         }
 
-        alert('تم تعيين أسعار التوصيل بنجاح!');
-        deliveryPriceForm.reset();
-        statesCheckboxes.querySelectorAll('input').forEach(input => input.checked = false);
         await window.adminDeliveryPricesBackend.fetchDeliveryPrices();
       } catch (error) {
-        alert('حدث خطأ أثناء تعيين أسعار التوصيل.');
+        window.adminDeliveryPricesFrontend.showError('حدث خطأ أثناء تعيين أسعار التوصيل.');
         console.error('Set Delivery Prices Error:', error);
+      }
+    },
+    updateDeliveryPrice: async ({ id, price_to_office, price_to_home }) => {
+      try {
+        const { error } = await supabase
+          .from('delivery_prices')
+          .update({ price_to_office, price_to_home })
+          .eq('id', id);
+        if (error) {
+          window.adminDeliveryPricesFrontend.showError('فشل في تعديل سعر التوصيل.');
+          console.error('Update Delivery Price Error:', error);
+          return;
+        }
+        await window.adminDeliveryPricesBackend.fetchDeliveryPrices();
+      } catch (error) {
+        window.adminDeliveryPricesFrontend.showError('حدث خطأ أثناء تعديل سعر التوصيل.');
+        console.error('Update Delivery Price Error:', error);
       }
     },
     fetchDeliveryPrices: async () => {
@@ -87,7 +97,7 @@ document.addEventListener('DOMContentLoaded', function() {
           .eq('user_id', (await supabase.auth.getUser()).data.user.id)
           .single();
         if (clientError || !client) {
-          alert('فشل في جلب بيانات البائع.');
+          window.adminDeliveryPricesFrontend.showError('فشل في جلب بيانات البائع.');
           console.error('Client Error:', clientError);
           return;
         }
@@ -96,13 +106,13 @@ document.addEventListener('DOMContentLoaded', function() {
           .select('*')
           .eq('client_id', client.id);
         if (pricesError) {
-          alert('فشل في جلب أسعار التوصيل.');
+          window.adminDeliveryPricesFrontend.showError('فشل في جلب أسعار التوصيل.');
           console.error('Delivery Prices Error:', pricesError);
           return;
         }
         window.adminDeliveryPricesFrontend.displayDeliveryPrices(prices, window.adminDeliveryPricesFrontend.getProducts(), window.adminDeliveryPricesFrontend.getStates());
       } catch (error) {
-        alert('حدث خطأ أثناء جلب أسعار التوصيل.');
+        window.adminDeliveryPricesFrontend.showError('حدث خطأ أثناء جلب أسعار التوصيل.');
         console.error('Fetch Delivery Prices Error:', error);
       }
     },
@@ -113,13 +123,14 @@ document.addEventListener('DOMContentLoaded', function() {
           .delete()
           .eq('id', priceId);
         if (error) {
-          alert('فشل في حذف سعر التوصيل.');
+          window.adminDeliveryPricesFrontend.showError('فشل في حذف سعر التوصيل.');
           console.error('Delete Delivery Price Error:', error);
           return;
         }
+        window.adminDeliveryPricesFrontend.showSuccess('تم حذف سعر التوصيل بنجاح!');
         await window.adminDeliveryPricesBackend.fetchDeliveryPrices();
       } catch (error) {
-        alert('حدث خطأ أثناء حذف سعر التوصيل.');
+        window.adminDeliveryPricesFrontend.showError('حدث خطأ أثناء حذف سعر التوصيل.');
         console.error('Delete Delivery Price Error:', error);
       }
     }

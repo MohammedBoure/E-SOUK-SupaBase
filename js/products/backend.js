@@ -36,6 +36,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
       const { customerName, phone, deliveryType, wilaya, commune, address, units } = window.frontend.getFormData();
 
+      if (!customerName) {
+        alert('اسم الزبون مطلوب.');
+        window.frontend.disableSubmitButton(false);
+        return false;
+      }
+
       const phoneRegex = /^(05|06|07)\d{8}$/;
       if (!phoneRegex.test(phone)) {
         alert('رقم الهاتف غير صالح. يجب أن يبدأ بـ 05, 06, أو 07 ويتكون من 10 أرقام.');
@@ -49,6 +55,7 @@ document.addEventListener('DOMContentLoaded', function() {
           .from('orders')
           .insert({
             client_id: CLIENT_ID,
+            customer_name: customerName, // Changed from customerName to customer_name to match database schema
             product_id: new URLSearchParams(window.location.search).get('id'),
             quantity: units,
             state_id: stateId,

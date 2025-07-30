@@ -3,149 +3,364 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>إدارة الطلبات - إي سوق</title>
-  <!-- Bootstrap RTL CSS -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <title>إدارة الطلبات</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
     body {
-      background-color: #f8f9fa;
+      font-family: 'Tajawal', sans-serif;
+      background: linear-gradient(135deg, #f9ffe6 0%, #ffdede 50%);
+      min-height: 100vh;
     }
-    .card {
-      border-radius: 10px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    
+    .orders-card {
+      backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.2);
     }
-    .navbar-brand {
-      font-weight: 700;
+    
+    .table-hover tbody tr:hover {
+      background-color: rgba(0, 123, 255, 0.05);
     }
+    
+    .product-img {
+      width: 50px;
+      height: 50px;
+      object-fit: cover;
+    }
+    
+    .floating-action {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      z-index: 1000;
+    }
+    
+    .btn-gradient {
+      background: linear-gradient(45deg, #667eea, #764ba2);
+      border: none;
+      color: white;
+    }
+    
+    .btn-gradient:hover {
+      background: linear-gradient(45deg, #5a6fd8, #6a4190);
+      color: white;
+    }
+    
+    .card-stats {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+    
+    .stats-icon {
+      font-size: 1.5rem;
+      opacity: 0.8;
+    }
+    
     .table-responsive {
-      border-radius: 10px;
-      overflow: hidden;
+      overflow-x: auto;
     }
-    .form-control, .form-select {
-      border-radius: 8px;
+    
+    .date-input {
+      width: 150px;
     }
-    .btn-action {
-      padding: 0.25rem 0.5rem;
-      font-size: 0.875rem;
+    
+    .action-buttons {
+      gap: 0.5rem;
     }
-    .login-container {
-      max-width: 450px;
-    }
-    .main-container {
-      max-width: 1400px;
-    }
-    .status-select {
-      min-width: 120px;
-    }
+    
     @media (max-width: 768px) {
-      .btn-responsive {
-        display: block;
-        width: 100%;
-        margin-bottom: 10px;
+      .floating-action {
+        bottom: 15px;
+        right: 15px;
       }
-      .table-responsive {
+      
+      .card-stats .h2 {
+        font-size: 1.5rem;
+      }
+      
+      .card-title {
+        font-size: 1.25rem;
+      }
+      
+      .form-control, .form-select {
+        font-size: 0.9rem;
+      }
+      
+      .btn-sm {
+        font-size: 0.8rem;
+        padding: 0.25rem 0.5rem;
+      }
+      
+      .table {
         font-size: 0.85rem;
       }
-      .status-select {
-        min-width: 100%;
+      
+      .table th, .table td {
+        padding: 0.5rem;
+      }
+      
+      .product-img {
+        width: 40px;
+        height: 40px;
+      }
+      
+      .date-input {
+        width: 120px;
+      }
+      
+      .action-buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .btn-action {
+        width: 100%;
+        text-align: center;
       }
     }
+    
+    @media (max-width: 576px) {
+      .navbar-brand {
+        font-size: 1rem;
+      }
+      
+      .card-header {
+        padding: 0.75rem;
+      }
+      
+      .btn-group .btn, .btn-group .form-control, .btn-group .form-select {
+        font-size: 0.75rem;
+      }
+      
+      .date-input {
+        width: 100%;
+        margin-bottom: 0.5rem;
+      }
+    }
+    /* Ensure the status column is always visible */
+    .status-column {
+      min-width: 150px; /* Ensure enough width for the select dropdown */
+      white-space: nowrap; /* Prevent text wrapping */
+    }
+
+    /* Reduce width of less critical columns on mobile */
+    @media (max-width: 768px) {
+      .table th:not(.status-column),
+      .table td:not(.status-column) {
+        font-size: 0.875rem; /* Smaller font size */
+        padding: 0.5rem; /* Reduced padding */
+      }
+
+      /* Ensure status column remains prominent */
+      .status-column {
+        min-width: 120px; /* Slightly smaller for mobile */
+      }
+
+      /* Optional: Hide less critical columns on very small screens */
+      .table th:nth-child(4), /* State */
+      .table td:nth-child(4),
+      .table th:nth-child(5), /* City */
+      .table td:nth-child(5) {
+        display: none; /* Hide State and City columns on mobile */
+      }
+    }
+
+    /* Ensure action buttons remain compact */
+    .action-buttons {
+      display: flex;
+      flex-row: nowrap;
+      gap: 0.5rem;
+    }
+
+    .action-buttons .btn {
+      padding: 0.25rem 0.5rem;
+      font-size: 0.75rem; /* Smaller buttons for mobile */
+    }  
   </style>
 </head>
 <body>
-  <!-- تسجيل الدخول -->
-  <div id="loginSection" class="container login-container py-5">
-    <div class="card shadow">
-      <div class="card-header bg-primary text-white text-center py-3">
-        <h2><i class="fas fa-user-shield me-2"></i>تسجيل دخول الأدمن</h2>
-      </div>
-      <div class="card-body p-4">
-        <form id="loginForm" class="needs-validation" novalidate>
-          <div class="mb-3">
-            <label for="email" class="form-label">البريد الإلكتروني</label>
-            <div class="input-group">
-              <span class="input-group-text"><i class="fas fa-envelope"></i></span>
-              <input type="email" id="email" class="form-control" required>
-              <div class="invalid-feedback">يرجى إدخال بريد إلكتروني صحيح</div>
-            </div>
-          </div>
-          <div class="mb-4">
-            <label for="password" class="form-label">كلمة المرور</label>
-            <div class="input-group">
-              <span class="input-group-text"><i class="fas fa-lock"></i></span>
-              <input type="password" id="password" class="form-control" required>
-              <div class="invalid-feedback">يرجى إدخال كلمة المرور</div>
-            </div>
-          </div>
-          <button type="submit" id="loginBtn" class="btn btn-primary w-100 py-2">
-            <i class="fas fa-sign-in-alt me-2"></i>تسجيل الدخول
-          </button>
-        </form>
-      </div>
-    </div>
-  </div>
-
-  <!-- قسم الطلبات -->
-  <div id="ordersSection" class="container main-container py-4 d-none">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4 rounded">
+  <!-- Orders Section -->
+  <div id="ordersSection" class="d-none">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary bg-gradient shadow-sm">
       <div class="container-fluid">
         <a class="navbar-brand" href="#">
           <i class="fas fa-shopping-cart me-2"></i>إدارة الطلبات
         </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav me-auto">
-            <li class="nav-item">
-              <a href="admin-delivery-prices.html" class="nav-link">
-                <i class="fas fa-truck me-1"></i>إدارة أسعار التوصيل
-              </a>
-            </li>
-          </ul>
-          <div class="d-flex">
-            <button id="logoutBtn" class="btn btn-danger">
-              <i class="fas fa-sign-out-alt me-1"></i>تسجيل الخروج
-            </button>
+        <div class="navbar-nav ms-auto">
+          <div class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+              <i class="fas fa-user-circle me-1"></i>الأدمن
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li><a class="dropdown-item" href="admin-delivery-prices.html"><i class="fas fa-truck me-2"></i>إدارة أسعار التوصيل</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item text-danger" href="#" id="logoutBtn"><i class="fas fa-sign-out-alt me-2"></i>تسجيل الخروج</a></li>
+            </ul>
           </div>
         </div>
       </div>
     </nav>
 
-    <div class="card shadow">
-      <div class="card-header bg-primary text-white py-3">
-        <h4 class="mb-0"><i class="fas fa-list-ol me-2"></i>قائمة الطلبات</h4>
+    <div class="container-fluid py-4">
+      <div class="row g-3 mb-4">
+        <div class="col-xl-3 col-md-6 col-sm-6">
+          <div class="card card-stats border-0 shadow-sm">
+            <div class="card-body">
+              <div class="row align-items-center">
+                <div class="col">
+                  <h5 class="card-title text-uppercase text-white-50 mb-0 fs-6">إجمالي الطلبات</h5>
+                  <span class="h2 fw-bold text-white" id="totalOrders">0</span>
+                </div>
+                <div class="col-auto">
+                  <i class="fas fa-shopping-bag stats-icon"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-md-6 col-sm-6">
+          <div class="card bg-success border-0 shadow-sm">
+            <div class="card-body text-white">
+              <div class="row align-items-center">
+                <div class="col">
+                  <h5 class="card-title text-uppercase text-white-50 mb-0 fs-6">الطلبات المكتملة</h5>
+                  <span class="h2 fw-bold mb-0" id="completedOrders">0</span>
+                </div>
+                <div class="col-auto">
+                  <i class="fas fa-check-circle stats-icon"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-md-6 col-sm-6">
+          <div class="card bg-warning border-0 shadow-sm">
+            <div class="card-body text-white">
+              <div class="row align-items-center">
+                <div class="col">
+                  <h5 class="card-title text-uppercase text-white-50 mb-0 fs-6">الطلبات قيد المعالجة</h5>
+                  <span class="h2 fw-bold mb-0" id="processingOrders">0</span>
+                </div>
+                <div class="col-auto">
+                  <i class="fas fa-clock stats-icon"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-md-6 col-sm-6">
+          <div class="card bg-info border-0 shadow-sm">
+            <div class="card-body text-white">
+              <div class="row align-items-center">
+                <div class="col">
+                  <h5 class="card-title text-uppercase text-white-50 mb-0 fs-6">الطلبات قيد التوصيل</h5>
+                  <span class="h2 fw-bold mb-0" id="deliveringOrders">0</span>
+                </div>
+                <div class="col-auto">
+                  <i class="fas fa-shipping-fast stats-icon"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="card-body p-0">
-        <div class="table-responsive">
-          <table class="table table-striped table-hover mb-0">
-            <thead class="table-dark">
-              <tr>
-                <th>رقم الطلب</th>
-                <th>المنتج</th>
-                <th>الكمية</th>
-                <th>الولاية</th>
-                <th>البلدية</th>
-                <th>رقم الهاتف</th>
-                <th>طريقة التوصيل</th>
-                <th>الحالة</th>
-                <th>تاريخ الطلب</th>
-                <th>إجراءات</th>
-              </tr>
-            </thead>
-            <tbody id="ordersTable" class="table-group-divider"></tbody>
-          </table>
+
+      <div class="card orders-card border-0 shadow">
+        <div class="card-header bg-white border-bottom">
+          <div class="row align-items-center">
+            <div class="col">
+              <h4 class="card-title mb-0 fw-bold text-primary">
+                <i class="fas fa-list-alt me-2"></i>قائمة الطلبات
+              </h4>
+            </div>
+            <div class="col-auto">
+              <div class="btn-group flex-wrap" role="group">
+                <input type="date" class="form-control form-control-sm me-2 date-input" id="startDate" placeholder="تاريخ البدء">
+                <input type="date" class="form-control form-control-sm me-2 date-input" id="endDate" placeholder="تاريخ الانتهاء">
+                <select class="form-select form-select-sm me-2" id="statusFilter">
+                  <option value="">الكل</option>
+                  <option value="قيد المعالجة">قيد المعالجة</option>
+                  <option value="تم الشحن">تم الشحن</option>
+                  <option value="تم التوصيل">تم التوصيل</option>
+                  <option value="ملغى">ملغى</option>
+                </select>
+                <button type="button" class="btn btn-outline-success btn-sm" id="exportBtn">
+                  <i class="fas fa-download me-1"></i>تصدير
+                </button>
+                <button type="button" class="btn btn-primary btn-sm" id="refreshBtn">
+                  <i class="fas fa-sync-alt me-1"></i>تحديث
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="card-body p-0">
+          <div class="text-center py-5 d-none" id="loadingSpinner">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">جارٍ التحميل...</span>
+            </div>
+            <p class="text-muted mt-3 mb-0">جارٍ تحميل الطلبات...</p>
+          </div>
+          
+          <div class="table-responsive">
+            <table class="table table-hover align-middle">
+              <thead>
+                <tr>
+                  <th scope="col">اسم العميل</th>
+                  <th scope="col">المنتج</th>
+                  <th scope="col" class="text-center">الكمية</th>
+                  <th scope="col">الولاية</th>
+                  <th scope="col">المدينة</th>
+                  <th scope="col">رقم الهاتف</th>
+                  <th scope="col">طريقة التوصيل</th>
+                  <th scope="col" class="status-column">الحالة</th>
+                  <th scope="col">تاريخ الطلب</th>
+                  <th scope="col">الإجراءات</th>
+                </tr>
+              </thead>
+              <tbody id="ordersTable">
+                <tr>
+                  <td colspan="10" class="text-center py-4">
+                    <div id="loadingSpinner" class="spinner-border" role="status">
+                      <span class="visually-hidden">جارٍ التحميل...</span>
+                    </div>
+                    <p>جارٍ تحميل الطلبات...</p>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        
+        <div class="card-footer bg-light border-top">
+          <div class="row align-items-center">
+            <div class="col">
+              <small class="text-muted" id="paginationInfo">عرض 0-0 من 0 طلبات</small>
+            </div>
+            <div class="col-auto">
+              <nav>
+                <ul class="pagination pagination-sm mb-0"></ul>
+              </nav>
+            </div>
+          </div>
         </div>
       </div>
     </div>
+    
+    <div class="floating-action d-none" id="floatingRefresh">
+      <button type="button" class="btn btn-primary btn-floating rounded-circle shadow" id="refreshBtnFloating">
+        <i class="fas fa-sync-alt"></i>
+      </button>
+    </div>
   </div>
 
-  <!-- Bootstrap JS Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="js/admin/admin-orders-backend.js"></script>
+  <script src="js/admin/admin-orders-frontend.js"></script>
+  <script src="js/admin/admin-login.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="/js/admin/admin-orders-backend.js"></script>
-  <script src="/js/admin/admin-orders-frontend.js"></script>
 </body>
 </html>

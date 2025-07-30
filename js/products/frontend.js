@@ -36,93 +36,141 @@ document.addEventListener('DOMContentLoaded', function() {
           position: fixed;
           top: 20px;
           right: 20px;
-          background: white;
-          border-radius: 12px;
-          box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+          background: #fff;
+          border-radius: 4px;
+          box-shadow: 0 2px 4px rgba(0,0,0,0.2);
           z-index: 10000;
           transform: translateX(400px);
-          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-          border-left: 4px solid #3498db;
+          transition: transform 0.3s ease;
+          border: 1px solid #ddd;
+          max-width: 90%;
         }
         .notification.show {
           transform: translateX(0);
         }
         .notification-success {
-          border-left-color: #27ae60;
+          border-color: #28a745;
         }
         .notification-error {
-          border-left-color: #e74c3c;
+          border-color: #dc3545;
         }
         .notification-content {
           display: flex;
           align-items: center;
-          gap: 10px;
-          padding: 1rem 1.5rem;
+          gap: 8px;
+          padding: 10px;
+          font-size: 14px;
+          font-family: Arial, sans-serif;
         }
         .notification-close {
           background: none;
           border: none;
-          font-size: 1.2rem;
+          font-size: 16px;
           cursor: pointer;
-          color: #7f8c8d;
-          margin-left: auto;
+          color: #666;
         }
-        .notification-close:hover {
-          color: #2c3e50;
-        }
-        .pulse-button {
-          animation: pulse 2s infinite cubic-bezier(0.4, 0, 0.2, 1);
+        .request-btn, .whatsapp-btn {
+          position: fixed;
+          width: 50px;
+          height: 50px;
+          border: none;
+          border-radius: 4px;
+          font-size: 20px;
+          cursor: pointer;
+          box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+          transition: all 0.2s ease;
+          z-index: 1000;
+          display: flex;
+          align-items: center;
+          justify-content: center;
         }
         .request-btn {
-          position: fixed;
-          bottom: 90px;
-          right: 30px;
-          width: 50px;
-          height: 50px;
-          background: var(--gradient-primary);
+          bottom: 20px;
+          right: 20px;
+          background: #007bff;
           color: white;
-          border: none;
-          border-radius: 50%;
-          font-size: 1.2rem;
-          cursor: pointer;
-          box-shadow: var(--shadow-lg);
-          transition: var(--transition);
-          z-index: 1000;
-        }
-        .request-btn.lower {
-          bottom: 30px;
-        }
-        .request-btn:hover {
-          transform: translateY(-5px) scale(1.1);
-          box-shadow: var(--shadow-xl);
         }
         .whatsapp-btn {
-          position: fixed;
-          bottom: 150px;
-          right: 30px;
-          width: 50px;
-          height: 50px;
+          bottom: 80px;
+          right: 20px;
           background: #25D366;
           color: white;
-          border: none;
+        }
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+        .loading-spinner {
+          text-align: center;
+          padding: 20px;
+        }
+        .spinner {
+          width: 40px;
+          height: 40px;
+          border: 3px solid #f3f3f3;
+          border-top: 3px solid #007bff;
           border-radius: 50%;
-          font-size: 1.5rem;
+          animation: spin 1s linear infinite;
+          margin: 0 auto 10px;
+        }
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+        .no-image-placeholder {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          height: 200px;
+          background: #f5f5f5;
+          color: #666;
+          font-family: Arial, sans-serif;
+        }
+        .no-image-placeholder i {
+          font-size: 24px;
+          margin-bottom: 8px;
+        }
+        .old-price {
+          color: #999;
+          text-decoration: line-through;
+          font-size: 0.9em;
+        }
+        .current-price {
+          color: #333;
+          font-weight: bold;
+        }
+        .carousel-thumbnails {
+          display: flex;
+          justify-content: center;
+          gap: 10px;
+          margin-top: 10px;
+        }
+        .carousel-thumbnails img {
+          width: 80px;
+          height: 80px;
+          object-fit: cover;
+          border: 2px solid #ddd;
+          border-radius: 4px;
           cursor: pointer;
-          box-shadow: var(--shadow-lg);
-          transition: var(--transition);
-          z-index: 1000;
+          transition: all 0.3s ease;
         }
-        .whatsapp-btn.lower {
-          bottom: 90px;
+        .carousel-thumbnails img.active {
+          border-color: #007bff;
+          transform: scale(1.1);
         }
-        .whatsapp-btn:hover {
-          transform: translateY(-5px) scale(1.1);
-          box-shadow: var(--shadow-xl);
+        .carousel-thumbnails img:hover {
+          border-color: #007bff;
         }
-        @keyframes pulse {
-          0% { transform: scale(1); }
-          50% { transform: scale(1.1); }
-          100% { transform: scale(1); }
+        .image-count {
+          position: absolute;
+          top: 10px;
+          right: 10px;
+          background: rgba(0,0,0,0.7);
+          color: white;
+          padding: 5px 10px;
+          border-radius: 4px;
+          font-size: 12px;
         }
       `;
       document.head.appendChild(styles);
@@ -229,7 +277,7 @@ document.addEventListener('DOMContentLoaded', function() {
           width: 60px;
           height: 60px;
           border: 4px solid #f3f3f3;
-          border-top: 4px solid #3498db;
+          border-top: 4px solid #007bff;
           border-radius: 50%;
           animation: spin 1s linear infinite;
           margin: 0 auto 1rem;
@@ -348,7 +396,7 @@ document.addEventListener('DOMContentLoaded', function() {
             ${discount > 0 ? `<span class="discount-badge">خصم ${discount}%</span>` : ''}
           </div>
         `;
-        animateElement(productPrice, 'scaleIn');
+        animateElement(productPrice, 'fadeIn');
       }
       
       setupEnhancedCarousel(selectedProduct.images);
@@ -386,6 +434,7 @@ document.addEventListener('DOMContentLoaded', function() {
       return;
     }
 
+    // Create main carousel images
     images.forEach((imgSrc, index) => {
       const slide = document.createElement('div');
       slide.className = `carousel-item ${index === 0 ? 'active' : ''}`;
@@ -401,10 +450,12 @@ document.addEventListener('DOMContentLoaded', function() {
               <i class="fas fa-search-plus"></i>
             </button>
           </div>
+          <div class="image-count">${index + 1}/${images.length}</div>
         </div>
       `;
       carouselImages.appendChild(slide);
 
+      // Create carousel indicators
       const indicator = document.createElement('button');
       indicator.type = 'button';
       indicator.setAttribute('data-bs-target', '#carousel');
@@ -413,6 +464,36 @@ document.addEventListener('DOMContentLoaded', function() {
       indicator.setAttribute('aria-label', `الصورة ${index + 1}`);
       carouselIndicators.appendChild(indicator);
     });
+
+    // Create thumbnails
+    const thumbnailsContainer = document.createElement('div');
+    thumbnailsContainer.className = 'carousel-thumbnails';
+    images.forEach((imgSrc, index) => {
+      const thumbnail = document.createElement('img');
+      thumbnail.src = imgSrc;
+      thumbnail.className = index === 0 ? 'active' : '';
+      thumbnail.alt = `Thumbnail ${index + 1}`;
+      thumbnail.setAttribute('data-bs-target', '#carousel');
+      thumbnail.setAttribute('data-bs-slide-to', index);
+      thumbnail.addEventListener('click', () => {
+        const carouselInstance = bootstrap.Carousel.getInstance(document.querySelector('#carousel'));
+        carouselInstance.to(index);
+        document.querySelectorAll('.carousel-thumbnails img').forEach(img => img.classList.remove('active'));
+        thumbnail.classList.add('active');
+      });
+      thumbnailsContainer.appendChild(thumbnail);
+    });
+    carouselImages.after(thumbnailsContainer);
+
+    // Initialize Bootstrap carousel
+    const carouselElement = document.querySelector('#carousel');
+    if (carouselElement && !bootstrap.Carousel.getInstance(carouselElement)) {
+      new bootstrap.Carousel(carouselElement, {
+        interval: false,
+        wrap: true,
+        touch: true
+      });
+    }
 
     enhanceCarouselNavigation();
   }
@@ -446,6 +527,14 @@ document.addEventListener('DOMContentLoaded', function() {
         }
       }
     }
+
+    carousel.addEventListener('slid.bs.carousel', (e) => {
+      const index = e.to;
+      const thumbnails = document.querySelectorAll('.carousel-thumbnails img');
+      thumbnails.forEach((thumb, i) => {
+        thumb.classList.toggle('active', i === index);
+      });
+    });
 
     carousel.addEventListener('keydown', (e) => {
       const carouselInstance = bootstrap.Carousel.getInstance(carousel);
@@ -492,7 +581,6 @@ document.addEventListener('DOMContentLoaded', function() {
           width: 100%;
           height: 100%;
           background: rgba(0,0,0,0.8);
-          backdrop-filter: blur(5px);
         }
         .modal-content {
           position: relative;
@@ -504,26 +592,25 @@ document.addEventListener('DOMContentLoaded', function() {
           width: 100%;
           height: 100%;
           object-fit: contain;
-          border-radius: 12px;
-          box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+          border-radius: 4px;
+          border: 1px solid #ddd;
         }
         .modal-close {
           position: absolute;
-          top: -40px;
+          top: -30px;
           right: 0;
-          background: rgba(255,255,255,0.9);
-          border: none;
-          width: 40px;
-          height: 40px;
-          border-radius: 50%;
+          background: #fff;
+          border: 1px solid #ddd;
+          width: 30px;
+          height: 30px;
+          border-radius: 4px;
           color: #333;
-          font-size: 1.2rem;
+          font-size: 1rem;
           cursor: pointer;
           transition: all 0.3s ease;
         }
         .modal-close:hover {
-          background: white;
-          transform: scale(1.1);
+          background: #f5f5f5;
         }
         .image-overlay {
           position: absolute;
@@ -542,19 +629,18 @@ document.addEventListener('DOMContentLoaded', function() {
           opacity: 1;
         }
         .zoom-btn {
-          background: rgba(255,255,255,0.9);
-          border: none;
-          width: 50px;
-          height: 50px;
-          border-radius: 50%;
+          background: #fff;
+          border: 1px solid #ddd;
+          width: 40px;
+          height: 40px;
+          border-radius: 4px;
           color: #333;
-          font-size: 1.2rem;
+          font-size: 1rem;
           cursor: pointer;
           transition: all 0.3s ease;
         }
         .zoom-btn:hover {
-          background: white;
-          transform: scale(1.1);
+          background: #f5f5f5;
         }
         .no-image-placeholder {
           display: flex;
@@ -562,15 +648,15 @@ document.addEventListener('DOMContentLoaded', function() {
           align-items: center;
           justify-content: center;
           height: 100%;
-          background: #f8f9fa;
-          color: #6c757d;
+          background: #f5f5f5;
+          color: #666;
         }
         .no-image-placeholder i {
           font-size: 3rem;
           margin-bottom: 1rem;
         }
         .old-price {
-          color: #6c757d !important;
+          color: #999 !important;
           text-decoration: line-through !important;
         }
       `;
@@ -777,7 +863,7 @@ document.addEventListener('DOMContentLoaded', function() {
           `;
           
           animateElement(deliveryPriceEl, 'fadeIn');
-          animateElement(totalPriceEl, 'scaleIn');
+          animateElement(totalPriceEl, 'fadeIn');
           animateElement(productPriceSummary, 'fadeIn');
         } else {
           throw new Error('Unable to fetch delivery prices');
@@ -931,14 +1017,20 @@ document.addEventListener('DOMContentLoaded', function() {
         }
       });
       
+      const customerName = document.getElementById('customer_name')?.value.trim();
+      if (!customerName) {
+        isFormValid = false;
+        showNotification('اسم الزبون مطلوب', 'error');
+      }
+      
       const submitBtn = document.getElementById('submitBtn');
       if (submitBtn) {
         submitBtn.disabled = !isFormValid;
         if (isFormValid) {
           submitBtn.classList.remove('btn-secondary');
-          submitBtn.classList.add('btn-success', 'pulse-button');
+          submitBtn.classList.add('btn-primary', 'pulse-button');
         } else {
-          submitBtn.classList.remove('btn-success', 'pulse-button');
+          submitBtn.classList.remove('btn-primary', 'pulse-button');
           submitBtn.classList.add('btn-secondary');
         }
       }
@@ -1020,6 +1112,40 @@ document.addEventListener('DOMContentLoaded', function() {
     observer.observe(el);
   });
 
+  document.querySelectorAll('.form-control, .form-select').forEach(input => {
+    input.addEventListener('focus', function() {
+      this.parentElement.classList.add('focused');
+    });
+    
+    input.addEventListener('blur', function() {
+      this.parentElement.classList.remove('focused');
+    });
+  });
+
+  document.addEventListener('touchstart', function() {}, {passive: true});
+
+  document.addEventListener('DOMContentLoaded', function() {
+    document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
+    
+    window.addEventListener('resize', function() {
+      document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
+    });
+    
+    const inputs = document.querySelectorAll('input, select, textarea');
+    inputs.forEach(input => {
+      input.addEventListener('focus', function() {
+        window.scrollTo(0, 0);
+        document.body.style.height = '100%';
+        document.body.style.overflow = 'hidden';
+      });
+      
+      input.addEventListener('blur', function() {
+        document.body.style.height = '';
+        document.body.style.overflow = '';
+      });
+    });
+  });
+
   document.addEventListener('error', function(e) {
     if (e.target.tagName === 'IMG') {
       const img = e.target;
@@ -1084,32 +1210,17 @@ document.addEventListener('DOMContentLoaded', function() {
   document.body.appendChild(whatsappBtn);
 
   window.addEventListener('scroll', () => {
-    const submitBtn = document.getElementById('submitBtn');
-    const submitBtnRect = submitBtn?.getBoundingClientRect();
-    const isSubmitBtnVisible = submitBtnRect && submitBtnRect.top >= 0 && submitBtnRect.bottom <= window.innerHeight;
-
-    requestBtn.style.display = isSubmitBtnVisible ? 'none' : 'block';
-    whatsappBtn.style.display = isSubmitBtnVisible ? 'none' : 'block';
-
-    if (isSubmitBtnVisible) {
-      requestBtn.classList.remove('lower');
-      whatsappBtn.classList.remove('lower');
-    } else if (window.pageYOffset > 300) {
-      if (requestBtn.style.display === 'none') {
-        whatsappBtn.classList.add('lower');
-      } else if (whatsappBtn.style.display === 'none') {
-        requestBtn.classList.add('lower');
-      } else {
-        requestBtn.classList.remove('lower');
-        whatsappBtn.classList.remove('lower');
-        requestBtn.classList.add('visible');
-        whatsappBtn.classList.add('visible');
-      }
+    const isScrolled = window.pageYOffset > 100;
+    
+    requestBtn.style.bottom = isScrolled ? '20px' : '80px';
+    whatsappBtn.style.bottom = isScrolled ? '90px' : '150px';
+    
+    if (isScrolled) {
+      requestBtn.classList.add('visible');
+      whatsappBtn.classList.add('visible');
     } else {
       requestBtn.classList.remove('visible');
       whatsappBtn.classList.remove('visible');
-      requestBtn.classList.remove('lower');
-      whatsappBtn.classList.remove('lower');
     }
   });
 
@@ -1144,5 +1255,5 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 
-  console.log('Enhanced frontend loaded successfully ✨');
+  console.log('Classic frontend loaded successfully ✨');
 });

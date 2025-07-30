@@ -8,3 +8,14 @@ add link  in README  file
 -----
 
 chore(release): finish project version 1.0.0
+
+-----
+
+fix: adjust image carousel speed and expand README
+
+- Fixed rapid movement issue in image carousel
+- Expanded README.md with:
+  * Setup instructions
+  * Features overview
+  * Contribution guidelines
+  * License info

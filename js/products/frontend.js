@@ -489,7 +489,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const carouselElement = document.querySelector('#carousel');
     if (carouselElement && !bootstrap.Carousel.getInstance(carouselElement)) {
       new bootstrap.Carousel(carouselElement, {
-        interval: false,
+        interval: false, // Disable auto sliding for all devices
         wrap: true,
         touch: true
       });
@@ -573,20 +573,27 @@ document.addEventListener('DOMContentLoaded', function() {
           display: flex;
           align-items: center;
           justify-content: center;
+          background: rgba(0,0,0,0.7); /* Keep background for modal, but not over image */
         }
         .modal-backdrop {
           position: absolute;
           top: 0;
           left: 0;
-          width: 100%;
-          height: 100%;
-          background: rgba(0,0,0,0.8);
+          width: 100vw;
+          height: 100vh;
+          z-index: 1;
+          background: transparent; /* Remove black overlay over image */
         }
         .modal-content {
           position: relative;
-          max-width: 90%;
-          max-height: 90%;
+          max-width: 90vw;
+          max-height: 90vh;
           z-index: 2;
+          background: none;
+          box-shadow: none;
+          display: flex;
+          align-items: center;
+          justify-content: center;
         }
         .modal-content img {
           width: 100%;
@@ -594,6 +601,7 @@ document.addEventListener('DOMContentLoaded', function() {
           object-fit: contain;
           border-radius: 4px;
           border: 1px solid #ddd;
+          background: #fff;
         }
         .modal-close {
           position: absolute;
@@ -608,6 +616,7 @@ document.addEventListener('DOMContentLoaded', function() {
           font-size: 1rem;
           cursor: pointer;
           transition: all 0.3s ease;
+          z-index: 3;
         }
         .modal-close:hover {
           background: #f5f5f5;

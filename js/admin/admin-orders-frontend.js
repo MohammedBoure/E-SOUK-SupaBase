@@ -6,7 +6,7 @@ window.adminOrdersFrontend = {
       document.body.style.backgroundColor = '#f8f9fa';
     }
   },
-  updateOrderStats: (orders) => {
+  updateOrderStats: async (orders) => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     const yesterday = new Date(today);
@@ -35,19 +35,43 @@ window.adminOrdersFrontend = {
     const processingOrdersEl = document.getElementById('processingOrders');
     const deliveringOrdersEl = document.getElementById('deliveringOrders');
     const paginationInfoEl = document.getElementById('paginationInfo');
+    const clientIdEl = document.getElementById('clientId');
 
     if (totalOrdersEl) totalOrdersEl.innerHTML = `${totalOrders} <span class="fs-6" data-bs-toggle="tooltip" title="اليوم: ${todayOrders} (${calcDiff(todayOrders, yesterdayOrders)}), الأسبوع: ${weekOrders} (${calcDiff(weekOrders, lastWeekOrders)}), الشهر: ${monthOrders} (${calcDiff(monthOrders, lastMonthOrders)})">ℹ</span>`;
     if (completedOrdersEl) completedOrdersEl.textContent = completedOrders;
     if (processingOrdersEl) processingOrdersEl.textContent = processingOrders;
-    if (deliveringOrdersEl) processingOrdersEl.textContent = deliveringOrders;
+    if (deliveringOrdersEl) deliveringOrdersEl.textContent = deliveringOrders;
     if (paginationInfoEl) {
       const currentPage = window.adminOrdersFrontend.currentPage || 1;
       const ordersPerPage = window.adminOrdersFrontend.ordersPerPage || 10;
       paginationInfoEl.textContent = `عرض ${(currentPage - 1) * ordersPerPage + 1}-${Math.min(currentPage * ordersPerPage, totalOrders)} من ${totalOrders} طلبات`;
     }
 
-    // Initialize tooltips
+    if (clientIdEl && window.adminOrdersBackend && window.adminOrdersBackend.getClientId) {
+      const clientId = await window.adminOrdersBackend.getClientId();
+      if (clientId) {
+        clientIdEl.innerHTML = `
+          <span>${clientId}</span>
+          <button class="copy-client-id-btn" title="نسخ معرف البائع" onclick="window.adminOrdersFrontend.copyClientId('${clientId}')">
+            <i class="fa fa-copy"></i>
+          </button>
+        `;
+      } else {
+        clientIdEl.innerHTML = '<span class="text-white">غير متوفر</span>';
+      }
+    }
+
     document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => new bootstrap.Tooltip(el));
+  },
+  copyClientId: (clientId) => {
+    navigator.clipboard.writeText(clientId)
+      .then(() => {
+        window.adminOrdersFrontend.showSuccess('تم نسخ معرف البائع بنجاح!');
+      })
+      .catch(err => {
+        console.error('خطأ في نسخ معرف البائع:', err);
+        window.adminOrdersFrontend.showError('فشل نسخ معرف البائع.');
+      });
   },
   displayOrders: (orders, products, states) => {
     window.adminOrdersFrontend.allOrders = orders;
@@ -59,23 +83,7 @@ window.adminOrdersFrontend = {
     if (orders.length === 0) {
       const row = document.createElement('tr');
       row.innerHTML = `
-        <td>غير متوفر</td>
-        <!-- ... other columns ... -->
-        <td>
-          <div class="d-flex flex-row gap-1 action-buttons">
-            <button onclick="window.adminOrdersBackend.deleteOrder('${order.id}')" 
-              class="btn btn-danger btn-sm btn-action">
-              <i class="fas fa-trash-alt me-1"></i>حذف
-            </button>
-            <button onclick="window.adminOrdersBackend.showOrderDetails('${order.id}')" 
-              class="btn btn-info btn-sm btn-action">
-              <i class="fas fa-info-circle me-1"></i>تفاصيل
-            </button>
-            <a href="tel:${order.phone}" class="btn btn-success btn-sm btn-action">
-              <i class="fas fa-phone me-1"></i>اتصال
-            </a>
-          </div>
-        </td>
+        <td colspan="11" class="text-center">لا توجد طلبات متاحة</td>
       `;
       ordersTable.appendChild(row);
       return;
@@ -87,8 +95,26 @@ window.adminOrdersFrontend = {
     paginatedOrders.forEach(order => {
       const product = products[order.product_id] || { name: order.product_id, images: [] };
       const state = states.find(s => s.id === order.state_id) || { name: order.state_id };
-      const options = order.order_options || [];
-      const optionsDisplay = options.slice(0, 3).map(opt => `${opt.option_type}: ${opt.option_value}`).join(', ') || '-';
+      const options = Array.isArray(order.order_options) ? order.order_options : [];
+
+      // تحسين التحقق من صيغة اللون
+      const isHexColor = (value) => {
+        if (typeof value !== 'string') return false;
+        return /^#([0-9A-F]{6}|[0-9A-F]{8})$/i.test(value.trim()); // دعم #RRGGBB و #RRGGBBAA
+      };
+
+      // عرض الخيارات مع دعم الألوان
+      const optionsDisplay = options.slice(0, 3).map(opt => {
+        if (!opt || !opt.option_type || !opt.option_value) return ''; // تجنب الأخطاء إذا كانت البيانات غير صحيحة
+        if (isHexColor(opt.option_value)) {
+          return `${opt.option_type}: <span style="display: inline-block; width: 20px; height: 20px; background-color: ${opt.option_value}; vertical-align: middle; border: 1px solid #ccc; margin-right: 5px;" title="${opt.option_value}"></span>`;
+        }
+        return `${opt.option_type}: ${opt.option_value}`;
+      }).filter(Boolean).join(', ') || '-';
+
+      // تسجيل لتصحيح الأخطاء
+      console.log(`Order ID: ${order.id}, Options:`, options, `Options Display: ${optionsDisplay}`);
+
       const statusIcons = {
         'قيد المعالجة': '<i class="fas fa-spinner text-primary me-1"></i>',
         'تم الشحن': '<i class="fas fa-truck text-info me-1"></i>',
@@ -125,6 +151,7 @@ window.adminOrdersFrontend = {
           </select>
         </td>
         <td>${new Date(order.created_at).toLocaleString('en-US', { dateStyle: 'short', timeStyle: 'short' })}</td>
+        <td style="direction: ltr; text-align: left;">${optionsDisplay}</td> <!-- عمود الخيارات باتجاه LTR -->
         <td>
           <div class="d-flex flex-row gap-1 action-buttons">
             <button onclick="window.adminOrdersBackend.deleteOrder('${order.id}')" 
@@ -144,6 +171,7 @@ window.adminOrdersFrontend = {
       ordersTable.appendChild(row);
     });
 
+    // باقي الكود للصفحات (pagination) يبقى كما هو
     const totalPages = Math.ceil(orders.length / ordersPerPage);
     const pagination = document.querySelector('.pagination');
     if (pagination) {

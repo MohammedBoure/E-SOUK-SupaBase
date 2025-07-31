@@ -1,8 +1,1 @@
-fix: adjust image carousel speed and expand README
-
-- Fixed rapid movement issue in image carousel
-- Expanded README.md with:
-  * Setup instructions
-  * Features overview
-  * Contribution guidelines
-  * License info
+feat(ui): improve product display consistency and main page CSS styling

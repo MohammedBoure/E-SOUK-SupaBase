@@ -1,7 +1,8 @@
+import { SUPABASE_URL, SUPABASE_KEY, CLIENT_ID } from '../config.js';
+
+
 document.addEventListener('DOMContentLoaded', function() {
-  const supabaseUrl = 'https://txfboulsslyxdwhvxpde.supabase.co';
-  const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR4ZmJvdWxzc2x5eGR3aHZ4cGRlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTM1Njg2NDIsImV4cCI6MjA2OTE0NDY0Mn0.x1y1dSqEzeu6iWgVAmC1c0DyTjltyMC8cTK0YjHPTpQ';
-  const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
   window.adminDeliveryPricesBackend = {
     checkAuth: async () => {

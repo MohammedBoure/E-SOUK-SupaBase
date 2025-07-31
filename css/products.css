@@ -184,8 +184,7 @@ main {
 }
 
 .carousel-inner {
-  width: 100%;
-  max-height: 500px; /* Maximum height for larger screens */
+  aspect-ratio: 1/1;
   border-radius: var(--border-radius);
   overflow: hidden;
   background: var(--light-gray);
@@ -194,23 +193,23 @@ main {
 
 .carousel-item {
   position: relative;
-  width: 100%;
+  overflow: hidden;
 }
 
 .carousel-item img {
   width: 100%;
-  height: auto;
-  object-fit: contain; /* Ensure full image visibility */
+  height: 100%;
+  object-fit: contain;
   object-position: center;
   transition: var(--transition);
   background: var(--white);
   cursor: zoom-in;
-  max-height: 500px; /* Match container max-height */
-  display: block;
 }
 
 .carousel-item img:active {
   cursor: zoom-out;
+  transform: scale(2);
+  transform-origin: var(--zoom-x, 50%) var(--zoom-y, 50%);
 }
 
 .carousel-item:hover img {
@@ -484,25 +483,24 @@ main {
 }
 
 .product-card-image {
-  width: 100%;
-  max-height: 300px; /* Maximum height for product images */
+  position: relative;
   overflow: hidden;
+  aspect-ratio: 1/1;
 }
 
 .product-card img {
   width: 100%;
-  height: auto;
-  object-fit: contain; /* Ensure full image visibility */
-  object-position: center;
+  height: 100%;
+  object-fit: contain;
   transition: var(--transition);
   background: var(--white);
   cursor: zoom-in;
-  display: block;
-  max-height: 300px; /* Match container max-height */
 }
 
 .product-card img:active {
   cursor: zoom-out;
+  transform: scale(2);
+  transform-origin: var(--zoom-x, 50%) var(--zoom-y, 50%);
 }
 
 .product-card:hover img {
@@ -818,22 +816,6 @@ main {
   main {
     padding: 2rem 0.5rem;
   }
-
-  .carousel-inner {
-    max-height: 400px; /* Adjusted for smaller screens */
-  }
-
-  .carousel-item img {
-    max-height: 400px; /* Match container */
-  }
-
-  .product-card-image {
-    max-height: 250px; /* Adjusted for smaller screens */
-  }
-
-  .product-card img {
-    max-height: 250px; /* Match container */
-  }
 }
 
 @media (max-width: 480px) {
@@ -863,21 +845,5 @@ main {
 
   .order-form {
     padding: 1.5rem;
-  }
-
-  .carousel-inner {
-    max-height: 300px; /* Adjusted for mobile */
-  }
-
-  .carousel-item img {
-    max-height: 300px; /* Match container */
-  }
-
-  .product-card-image {
-    max-height: 200px; /* Adjusted for mobile */
-  }
-
-  .product-card img {
-    max-height: 200px; /* Match container */
   }
 }

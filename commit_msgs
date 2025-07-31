@@ -26,3 +26,7 @@ feat(ui): improve product display consistency and main page CSS styling
 -----
 
 fix(products): add type="module" to backend.js script import for proper ES module support
+
+-----
+
+update products.json 

@@ -1,53 +1,48 @@
 {
-  "3": {
-    "name": "Smart Watch",
-    "description": "High-quality smart watch with fitness tracking and modern design.",
-    "priceBeforeDiscount": 800,
-    "priceAfterDiscount": 599,
+  "1": {
+    "name": "كرسي مكتب مريح",
+    "description": "كرسي عملي مع مسند للظهر وتصميم مريح لدعم الجسم أثناء الجلوس الطويل.",
+    "priceBeforeDiscount": 22000,
+    "priceAfterDiscount": 17500,
     "images": [
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRrFsBlZSYstB-5KOcKaFesl9ob5Z7PKbzFCg&s",
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRv4MwtMXQ5zT-QGT8EPtYRPwPVRghPpP_8wCLabjUYxDUNbjETdDaGTmD97VDqVVV9k-w&usqp=CAU",
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpWtL4VH0aBbJrwez8b-TR1I8TYOa_NQ-dR8zjiV014DoAMLupF2C6qZf8WhKs8-Cuf2Y&usqp=CAU"
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS03eFgeGdHhCCnUJD6_OXHug6DpN1PGN98Og&s",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVZV754dpcLXt8hotYhoEqA3364B_RK_3qyO-QyIS1VmVQJLfhCSJJXuGbkhGnVcuynJQ&usqp=CAU"
+    ]
+  },
+  "2": {
+    "name": "خلاط كهربائي منزلي",
+    "description": "خلاط قوي لتحضير العصائر والمشروبات والصلصات بسهولة في المنزل.",
+    "priceBeforeDiscount": 4000,
+    "priceAfterDiscount": 2200,
+    "images": [
+      "https://cdn.salla.sa/ExWrA/c9c58dec-8215-4fe2-9d1c-3b60638e2394-1000x1000-nd8CF8als9UMcDJRtKAVOB1lCJ1r69iHGtYqxnQu.jpg"
+    ]
+  },
+  "3": {
+    "name": "حقيبة سفر متوسطة الحجم",
+    "description": "حقيبة عملية بخامات قوية ومقابض متينة، مثالية للسفر.",
+    "priceBeforeDiscount": 3000,
+    "priceAfterDiscount": 2500,
+    "images": [
+      "https://ma.jumia.is/unsafe/fit-in/300x300/filters:fill(white)/product/50/573445/1.jpg?2823"
     ]
   },
   "4": {
-    "name": "Wireless Earbuds",
-    "description": "Comfortable earbuds with clear sound and long battery life.",
-    "priceBeforeDiscount": 500,
-    "priceAfterDiscount": 350,
+    "name": "ساعة حائط خشبية",
+    "description": "ساعة أنيقة بتصميم خشبي تضيف لمسة كلاسيكية إلى ديكور المنزل.",
+    "priceBeforeDiscount": 2500,
+    "priceAfterDiscount": 1500,
     "images": [
-      "https://www.boat-lifestyle.com/cdn/shop/files/ACCG6DS7WDJHGWSH_0.png?v=1727669669",
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQLsjdbrkBuCInR-eHBEgdz4Fn48Q_b7nDjMEF0P46JP6rNSBBRfzE9qYToiGWMdFyVMJ4&usqp=CAU"
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTjPBpRxBgrZYwxMYRS6sdUCaW04PQpR6vHLg&s"
     ]
   },
   "5": {
-    "name": "Gaming Mouse",
-    "description": "Precision mouse for gamers with customizable buttons.",
-    "priceBeforeDiscount": 300,
-    "priceAfterDiscount": 220,
+    "name": "بطانية شتوية دافئة",
+    "description": "بطانية ناعمة وسميكة مثالية للشتاء البارد والراحة في المنزل.",
+    "priceBeforeDiscount": 5000,
+    "priceAfterDiscount": 3500,
     "images": [
-      "https://www.geekzonedz.com/2340-large_default/logitech-g305-lightspeed-wireless-gaming-mouse-noir.jpg",
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2EtF7GkGP2vgWR_FzrVPTBrDzq4af7lfjz8UB3o9YGup0RRGgqo3W89AAMLOOoFD1Ol4&usqp=CAU"
-    ]
-  },
-  "6": {
-    "name": "Bluetooth Speaker",
-    "description": "Portable speaker with strong bass and waterproof design.",
-    "priceBeforeDiscount": 650,
-    "priceAfterDiscount": 490,
-    "images": [
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQc5ovm7E_QmAyUGhtzuoOeKIREwmdTICjSxQ&s",
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZPzIk1vAHmKEZT0J3b6lfG0CNEvk1rEMxDR101S6ekRgAkQ20ZajF7ybaBME8vEE0zZg&usqp=CAU"
-    ]
-  },
-  "7": {
-    "name": "LED Desk Lamp",
-    "description": "Energy-saving LED lamp with brightness control and USB port.",
-    "priceBeforeDiscount": 400,
-    "priceAfterDiscount": 299,
-    "images": [
-      "https://m.media-amazon.com/images/I/513Mqx+kK+L.jpg",
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSc8dxIKIJNSf1atkghimAt6o5-TK-OiGynSQ&s"
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5_NosyswCTUYVGPnPR_1OqpbXNcFh1Tp7VQ&s"
     ]
   }
 }
